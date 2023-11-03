@@ -32,23 +32,35 @@ const createTray = () => {
 };
 
 const createWindow = () => {
-  // Create the browser window.
   window = new BrowserWindow({
     width: 1600,
     height: 600,
     show: false,
+	title: "SSO - auth",
     webPreferences: {
       nodeIntegration: true,
     },
   });
-
+ window.removeMenu()
  const appURL = "http://127.0.0.1:8000/";
  window.loadURL(appURL);
+ 
+ window.on('close', function (event) {
+    if(!app.isQuiting){
+        event.preventDefault();
+        window.hide();
+        event.returnValue = false;
+    }
+});
 };
 
 app.on('ready', () => {
   createWindow();
   createTray();
+});
+
+app.on('before-quit', function () {
+  isQuiting = true;
 });
 
 app.on('window-all-closed', () => {
@@ -58,8 +70,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
