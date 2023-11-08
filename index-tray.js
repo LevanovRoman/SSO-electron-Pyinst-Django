@@ -36,7 +36,8 @@ const createWindow = () => {
     width: 1600,
     height: 600,
     show: false,
-	title: "SSO - auth",
+    icon:'./icon.ico',
+	  title: "SSO - auth",
     webPreferences: {
       nodeIntegration: true,
     },
